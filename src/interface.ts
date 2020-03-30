@@ -2,7 +2,7 @@ import { FilterType } from 'mnr-decorator'
 
 export interface ColumnProps {
     key: string
-    text: string
+    text: string | undefined
     isFilter?: FilterType
 }
 
@@ -22,7 +22,7 @@ export interface TableState {
 }
 
 export interface TableProps {
-    columnSpec: any
+    columnSpec?: any
     getDataSource(): Promise<any>
     formatDate?: string
     options?: TableOptions

@@ -10,9 +10,16 @@ import './styles/filter.less'
 
 const buildColumnFormMetadata = (metadata: DecoratorMetadata[]) => {
     const columns: ColumnProps[] = []
-    metadata?.map(meta => {
-        columns.push({ key: meta.propertyName, text: meta.options.label, isFilter: meta.options.isFilter })
-    })
+
+    if (isArrayEmpty(metadata)) {
+        console.error(
+            "There no column specification from your app. Please read more at 'https://www.npmjs.com/package/mnr-table'"
+        )
+    } else {
+        metadata?.map(meta => {
+            columns.push({ key: meta.propertyName, text: meta.options?.label, isFilter: meta.options?.isFilter })
+        })
+    }
     return columns
 }
 
@@ -103,9 +110,14 @@ export function Table(props: TableProps) {
             .catch(err => console.log('err', err))
     }, [])
 
-    const { dataSource, filter, pagination } = state
-    const dataRows = getDataRowsByFilter(filter, dataSource)
-    const paginationRows = getDataRowsPerPage(pagination.page, pagination.size, dataRows)
+    const { dataSource, filter, pagination, columns } = state
+    let dataRows: any[] = undefined
+    let paginationRows: any[] = undefined
+    if (!isArrayEmpty(columns)) {
+        dataRows = getDataRowsByFilter(filter, dataSource)
+        paginationRows = getDataRowsPerPage(pagination.page, pagination.size, dataRows)
+    }
+
     return (
         <div>
             {/* <button onClick={() => onEnableFilterClick(!state.enableFilter, setState)}>Filter</button> */}
