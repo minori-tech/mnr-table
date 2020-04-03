@@ -1,28 +1,82 @@
-#main-table {
-    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+@import './variable.less';
+@nameClassDefault: mnr;
+@mainTableId: main-table;
+@borderNoneClass: 'border-none';
+
+#@{mainTableId}{
+    font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif", "sans-serif", "-apple-system", "BlinkMacSystemFont";
     border-collapse: collapse;
     width: 100%;
+    border: #border[borderDefault];
+    thead{
+        border-collapse: separate;
+        table-layout: fixed;
+        width: 100%;
+        tr {
+            th {
+                border-top: #border[borderDefault];
+                border-bottom: #border[borderDefault];
+                overflow: #overflow[hidden];
+                position: #position[relative];
+                font-size: 12px;
+                font-weight: 500;
+                height: auto;
+                padding: 7px 21px 7px;
+                text-align: left;
+                &.@{nameClassDefault}-border-none{
+                    border: #border[borderNone];
+                }
+                .@{nameClassDefault}-headertext{
+                    overflow: #overflow[hidden];
+                    color: #color[colorBackOpacity];
+                    border: 0 none;
+                    display: block;
+                    font-size: 12px;
+                    font-weight: 500;
+                    height: 29px;
+                    line-height: 30px;
+                    margin: -7px;
+                    padding: 0 0.6em;
+                    text-align: left;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+            }
+        }
+    }
+    tbody{
+        tr{
+            height: 38px;
+            td{
+                border-top: #border[borderDefault];
+                border-bottom: #border[borderDefault];
+                display: table-cell;
+                font-size: 13px;
+                line-height: 20px;
+                overflow: hidden;
+                padding: 8px 21px;
+                vertical-align: middle;
+                white-space: nowrap;
+                width: auto;
+              
+                .mrn-btn-status {
+                    #button-status;
+                    &.active{
+                        color: #color[success];
+                        background-color: #backgroundColor[success];
+                    }
+                    &.inactive{
+                        color: #color[danger];
+                        background-color: #backgroundColor[danger];
+                    }
+                    &.nolmal{
+                        color: #color[secondary];
+                        background-color: #backgroundColor[secondary];
+                    }
+                }
+            }
+        }
+    }
 }
 
-#main-table td,
-#main-table th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#main-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#main-table tbody tr:hover {
-    background-color: #ddd;
-}
-
-#main-table thead {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4caf50;
-    color: white;
-    user-select: none;
-}

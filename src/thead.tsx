@@ -143,8 +143,10 @@ export const THead = (props: THeadProps) => {
         <thead>
             <tr>
                 {props.state.columns.map((col, i) => (
-                    <th key={i} style={{ position: 'relative' }}>
-                        {col.isFilter ? renderFilter(col, props.state, props.setState) : col.text}
+                    <th key={i}>
+                        <span className='mnr-headertext'>
+                            {col.isFilter ? renderFilter(col, props.state, props.setState) : col.text}
+                        </span>
                     </th>
                 ))}
                 {!isObjectEmpty(props.options) && <th>Actions</th>}
