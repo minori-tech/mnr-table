@@ -138,6 +138,7 @@ export function Table(props: TableProps) {
         dataRows = getDataRowsByFilter(filter, dataSource)
         paginationRows = getDataRowsPerPage(pagination.page, pagination.size, dataRows)
     }
+    console.log(columns)
 
     return (
         <div>
@@ -153,17 +154,26 @@ export function Table(props: TableProps) {
                                     {state.columns.map((col, i) => (
                                         <td key={`${index}-${i}`}>{getValueByCase(col, item, props.formatDate)}</td>
                                     ))}
-                                    {/* {props.options && ( */}
-                                    <td>
-                                        <button className='mnr-button'>Edit</button>
-                                        <button
-                                            className='mnr-button'
-                                            // onClick={() =>
-                                            //     onDeleteClick(item, props.options.onDeleteRow, state, setState)
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
+                                    {props.options && (
+                                        <td>
+                                            {props.options.onEditRow && (
+                                                <button
+                                                    className='mnr-button'
+                                                    onClick={() => onEditClick(item, props.options.onEditRow)}>
+                                                    Edit
+                                                </button>
+                                            )}
+                                            {props.options.onDeleteRow && (
+                                                <button
+                                                    className='mnr-button'
+                                                    onClick={() =>
+                                                        onDeleteClick(item, props.options.onDeleteRow, state, setState)
+                                                    }>
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                     </tbody>
