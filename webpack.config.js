@@ -59,7 +59,7 @@ module.exports = {
                 loaders: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }, 'less-loader']
             },
             {
-                test: /\.(jpe?g|png|gif|tff)$/i,
+                test: /\.(jpe?g|png|gif)$/i,
                 loaders: [
                     'file-loader?hash=sha512&digest=hex&name=img/[hash].[ext]',
                     'image-webpack-loader?bypassOnDebug&optipng.optimizationLevel=7&gifsicle.interlaced=false'
