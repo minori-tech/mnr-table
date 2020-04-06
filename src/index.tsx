@@ -16,8 +16,13 @@ const buildColumnFormMetadata = (metadata: DecoratorMetadata[]) => {
             "There no column specification from your app. Please read more at 'https://www.npmjs.com/package/mnr-table'"
         )
     } else {
-        metadata?.map((meta: any) => {
-            columns.push({ key: meta.propertyName, text: meta.options?.label, isFilter: meta.options?.isFilter })
+        metadata?.map((meta) => {
+            columns.push({
+                key: meta.propertyName,
+                text: meta.options?.label,
+                isFilter: meta.options?.isFilter,
+                lookup: meta.options.lookup,
+            })
         })
     }
     return columns
@@ -35,7 +40,7 @@ const onDeleteClick = (row: any, onDeleteRow: (id: string) => Promise<any>, stat
     onDeleteRow(row.id)
         .then(() => {
             const { dataSource } = state
-            const index = dataSource.findIndex((item: any) => item.id === row.id)
+            const index = dataSource.findIndex((item) => item.id === row.id)
             dataSource.splice(index, 1)
             setState((s: TableState) => ({ ...s, dataSource }))
         })
@@ -85,6 +90,20 @@ const getDataRowsByFilter = (filter: any, dataSource: any[]) => {
     }
 }
 
+const getValueByCase = (col: ColumnProps, item: any, formatDate?: string): JSX.Element => {
+    console.log(col)
+
+    if (col.key.toLowerCase().includes('date')) {
+        return <>{moment(item[col.key]).format(formatDate || 'DD/MM/YYYY')}</>
+    }
+    if (col.lookup) {
+        const itemValue = item[col.key]
+        const lookupValue = col.lookup[itemValue]
+        return <span className={`mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
+    }
+    return <>{item[col.key]}</>
+}
+
 export { TableProps }
 
 export function Table(props: TableProps) {
@@ -121,23 +140,17 @@ export function Table(props: TableProps) {
     return (
         <div>
             {/* <button onClick={() => onEnableFilterClick(!state.enableFilter, setState)}>Filter</button> */}
-            <div className='table-res'>
+            <div></div>
+            <div className='table-mobile'>
                 <table id='main-table'>
                     <THead state={state} setState={setState} options={props.options} />
                     <tbody>
                         {!isArrayEmpty(paginationRows) &&
                             paginationRows.map((item, index) => (
                                 <tr key={index}>
-                                    {state.columns.map((col, i) => {
-                                        if (col.key.toLowerCase().includes('date')) {
-                                            return (
-                                                <td key={`${index}-${i}`}>
-                                                    {moment(item[col.key]).format(props.formatDate || 'DD/MM/YYYY')}
-                                                </td>
-                                            )
-                                        }
-                                        return <td key={`${index}-${i}`}>{item[col.key]}</td>
-                                    })}
+                                    {state.columns.map((col, i) => (
+                                        <td key={`${index}-${i}`}>{getValueByCase(col, item, props.formatDate)}</td>
+                                    ))}
                                     {props.options && (
                                         <td>
                                             {props.options.onEditRow && (

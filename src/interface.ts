@@ -1,9 +1,11 @@
 import { FilterType } from 'mnr-decorator'
+import { Lookup } from 'mnr-decorator/src/DecoratorOptions'
 
 export interface ColumnProps {
     key: string
     text: string | undefined
     isFilter?: FilterType
+    lookup?: Lookup
 }
 
 export interface TableOptions {

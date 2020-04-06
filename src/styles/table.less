@@ -3,7 +3,7 @@
 @mainTableId: main-table;
 @borderNoneClass: 'border-none';
 
-.table-res {
+.table-mobile {
     @media (max-width: 767px) {
         width: 100%;
         overflow-x: auto;
@@ -108,6 +108,17 @@
                         color: #color[secondary];
                         background-color: #backgroundColor[secondary];
                     }
+                }
+                // style for tag Tracker
+                .@{nameClassDefault}-tag-task {
+                    color: #2f54eb;
+                    background: #f0f5ff;
+                    border-color: #adc6ff;
+                }
+                .@{nameClassDefault}-tag-bug {
+                    color: #fa541c;
+                    background: #fff2e8;
+                    border-color: #ffbb96;
                 }
             }
         }
