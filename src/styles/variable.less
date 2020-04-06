@@ -1,53 +1,110 @@
 @font-face {
     font-family: 'Lucida sans';
     src: url('/lucida-sans-regular.ttf');
-  }
+}
 
-  @font-face {
+@font-face {
     font-family: 'trebuchet MS';
     src: url('/trebuc.ttf');
-  }
+}
 
 #fontFamily {
     font-family: 'Lucida sans', 'trebuchet MS', arial;
 }
 
-#border(){
-    borderNone: 0px;
-    borderDefault: 1px solid #ccc;
+#border() {
+    bordernone: 0px;
+    borderdefault: 1px solid #ccc;
 }
 
-#overflow(){
+#overflow() {
     scroll: scroll;
     hidden: hidden;
     auto: auto;
     visible: visible;
 }
 
-#position(){
+#position() {
     relative: relative;
     absolute: absolute;
 }
 
-#color(){
-    colorBackOpacity: rgba(0, 0, 0, 0.54);
-    colorBack: #000;
+#color() {
+    colorbackopacity: rgba(0, 0, 0, 0.54);
+    colorback: #000;
     primary: #007bff;
     secondary: #6c757d;
     success: #28a745;
-    danger: #dc3545 ;
+    danger: #dc3545;
     warning: #ffc107;
     dark: #343a40;
     default: #ccc;
 }
+// style for tag Tracker
+#color-tag-magenta {
+    color: #eb2f96;
+    background: #fff0f6;
+    border-color: #ffadd2;
+}
+#color-tag-red {
+    color: #f5222d;
+    background: #fff1f0;
+    border-color: #ffa39e;
+}
+#color-tag-volcano {
+    color: #fa541c;
+    background: #fff2e8;
+    border-color: #ffbb96;
+}
+#color-tag-orange {
+    color: #fa8c16;
+    background: #fff7e6;
+    border-color: #ffd591;
+}
+#color-tag-gold {
+    color: #faad14;
+    background: #fffbe6;
+    border-color: #ffe58f;
+}
+#color-tag-lime {
+    color: #a0d911;
+    background: #fcffe6;
+    border-color: #eaff8f;
+}
+#color-tag-green {
+    color: #52c41a;
+    background: #f6ffed;
+    border-color: #b7eb8f;
+}
+#color-tag-cyan {
+    color: #13c2c2;
+    background: #e6fffb;
+    border-color: #87e8de;
+}
+#color-tag-blue {
+    color: #1890ff;
+    background: #e6f7ff;
+    border-color: #91d5ff;
+}
+#color-tag-geekblue {
+    color: #2f54eb;
+    background: #f0f5ff;
+    border-color: #adc6ff;
+}
+#color-tag-purple {
+    color: #722ed1;
+    background: #f9f0ff;
+    border-color: #d3adf7;
+}
+//style for tag Tracker
 
-#backgroundColor(){
+#backgroundColor() {
     success: #cfffd9;
     danger: #ffd2d6;
     secondary: #e6e6e6;
 }
 
-#button-status{
+#button-status {
     position: relative;
     height: 19px;
     text-align: center;
@@ -58,7 +115,7 @@
     border: 0px;
     text-transform: capitalize;
     margin-right: 10px;
-    &:last-child{
+    &:last-child {
         margin-right: 0;
     }
 }

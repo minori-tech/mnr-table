@@ -91,15 +91,17 @@ const getDataRowsByFilter = (filter: any, dataSource: any[]) => {
 }
 
 const getValueByCase = (col: ColumnProps, item: any, formatDate?: string): JSX.Element => {
-    console.log(col)
-
     if (col.key.toLowerCase().includes('date')) {
         return <>{moment(item[col.key]).format(formatDate || 'DD/MM/YYYY')}</>
     }
     if (col.lookup) {
         const itemValue = item[col.key]
         const lookupValue = col.lookup[itemValue]
-        return <span className={`mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
+        if (col.key.includes('percent')) {
+            return <span className={`mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
+        } else {
+            return <span className={`mnr-tag mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
+        }
     }
     return <>{item[col.key]}</>
 }
@@ -151,23 +153,17 @@ export function Table(props: TableProps) {
                                     {state.columns.map((col, i) => (
                                         <td key={`${index}-${i}`}>{getValueByCase(col, item, props.formatDate)}</td>
                                     ))}
-                                    {props.options && (
-                                        <td>
-                                            {props.options.onEditRow && (
-                                                <button onClick={() => onEditClick(item, props.options.onEditRow)}>
-                                                    Edit
-                                                </button>
-                                            )}
-                                            {props.options.onDeleteRow && (
-                                                <button
-                                                    onClick={() =>
-                                                        onDeleteClick(item, props.options.onDeleteRow, state, setState)
-                                                    }>
-                                                    Delete
-                                                </button>
-                                            )}
-                                        </td>
-                                    )}
+                                    {/* {props.options && ( */}
+                                    <td>
+                                        <button className='mnr-button'>Edit</button>
+                                        <button
+                                            className='mnr-button'
+                                            // onClick={() =>
+                                            //     onDeleteClick(item, props.options.onDeleteRow, state, setState)
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                     </tbody>

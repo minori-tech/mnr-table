@@ -11,10 +11,25 @@ const statusLookup = Object.freeze({
     5: 'Canceled',
     6: 'Reopened',
 })
+
+const percentLookup = Object.freeze({
+    0: '0',
+    10: '10',
+    20: '20',
+    30: '30',
+    40: '40',
+    50: '50',
+    60: '60',
+    70: '70',
+    80: '80',
+    90: '90',
+    100: '100',
+})
+
 class Demo extends PureComponent {
     @ColumnSpec({ label: 'Tracker', lookup: Object.freeze({ 1: 'Task', 2: 'Bug' }) })
     tracker: string
-    @ColumnSpec({ label: 'Status', lookup: statusLookup })
+    @ColumnSpec({ label: 'Status', lookup: statusLookup, isFilter: 'single' })
     status: string
     @ColumnSpec({ label: 'Subject' })
     subject: string
@@ -26,7 +41,7 @@ class Demo extends PureComponent {
     startDate: Date
     @ColumnSpec({ label: 'Due Date' })
     dueDate: Date
-    @ColumnSpec({ label: '% Done' })
+    @ColumnSpec({ label: '% Done', lookup: percentLookup })
     percentDone: any
 
     getDataSource = async () => {
