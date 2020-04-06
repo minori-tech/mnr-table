@@ -42,7 +42,7 @@
     &-item {
         cursor: pointer;
         border-radius: 0;
-        min-width: 28px;
+        min-width: 30px;
         height: 28px;
         line-height: 28px;
         text-align: center;
@@ -67,9 +67,11 @@
         }
 
         &-active {
-            background-color: #2d33f5;
-            border-color: #1178a7;
-
+            z-index: 3;
+            color: #fff;
+            cursor: default;
+            background-color: #337ab7;
+            border-color: #337ab7;
             a {
                 color: #fff;
             }
@@ -158,7 +160,6 @@
         }
     }
 
- 
     &-prev,
     &-next,
     &-jump-prev,
@@ -206,14 +207,16 @@
     }
 
     &-disabled {
+        color: #777;
         cursor: not-allowed;
-        background-color: #DFDFDF;
-        a{
-            &::after{
-                color: #9F9F9F ;
+        background-color: #fff;
+        border-color: #ddd;
+        a {
+            &::after {
+                color: #9f9f9f;
             }
         }
-        color: #9F9F9F ;
+        color: #9f9f9f;
         a {
             color: #ccc;
         }

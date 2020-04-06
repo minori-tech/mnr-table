@@ -16,7 +16,7 @@ const buildColumnFormMetadata = (metadata: DecoratorMetadata[]) => {
             "There no column specification from your app. Please read more at 'https://www.npmjs.com/package/mnr-table'"
         )
     } else {
-        metadata?.map(meta => {
+        metadata?.map((meta: any) => {
             columns.push({ key: meta.propertyName, text: meta.options?.label, isFilter: meta.options?.isFilter })
         })
     }
@@ -35,11 +35,11 @@ const onDeleteClick = (row: any, onDeleteRow: (id: string) => Promise<any>, stat
     onDeleteRow(row.id)
         .then(() => {
             const { dataSource } = state
-            const index = dataSource.findIndex(item => item.id === row.id)
+            const index = dataSource.findIndex((item: any) => item.id === row.id)
             dataSource.splice(index, 1)
             setState((s: TableState) => ({ ...s, dataSource }))
         })
-        .catch(err => console.log('err', err))
+        .catch((err) => console.log('err', err))
 }
 
 const onPageChange = (page: number, size: number, setState: any) => {
@@ -71,12 +71,12 @@ const getDataRowsByFilter = (filter: any, dataSource: any[]) => {
             const filterByVal = filter[key]
 
             if (isMoment(filterByVal)) {
-                dataFilter = dataFilter.filter(row => filterByVal.isSame(moment(row[key])))
+                dataFilter = dataFilter.filter((row) => filterByVal.isSame(moment(row[key])))
             }
             if (Array.isArray(filterByVal)) {
-                dataFilter = dataFilter.filter(row => (filterByVal as string[]).some(s => s === row[key]))
+                dataFilter = dataFilter.filter((row) => (filterByVal as string[]).some((s) => s === row[key]))
             } else {
-                dataFilter = dataFilter.filter(row => row[key].toLowerCase().includes(filterByVal.toLowerCase()))
+                dataFilter = dataFilter.filter((row) => row[key].toLowerCase().includes(filterByVal.toLowerCase()))
             }
         }
         return dataFilter
@@ -96,18 +96,18 @@ export function Table(props: TableProps) {
             )
         ),
         pagination: { page: 1, size: 10 },
-        filter: {}
+        filter: {},
     }
     const [state, setState] = useState(initialState)
 
     useEffect(() => {
         props
             .getDataSource()
-            .then(dataSource => {
+            .then((dataSource) => {
                 const cachedDataSource = JSON.stringify(dataSource)
-                setState(s => ({ ...s, dataSource, cachedDataSource }))
+                setState((s) => ({ ...s, dataSource, cachedDataSource }))
             })
-            .catch(err => console.log('err', err))
+            .catch((err) => console.log('err', err))
     }, [])
 
     const { dataSource, filter, pagination, columns } = state
@@ -121,44 +121,45 @@ export function Table(props: TableProps) {
     return (
         <div>
             {/* <button onClick={() => onEnableFilterClick(!state.enableFilter, setState)}>Filter</button> */}
-            <div></div>
-            <table id='main-table'>
-                <THead state={state} setState={setState} options={props.options} />
-                <tbody>
-                    {!isArrayEmpty(paginationRows) &&
-                        paginationRows.map((item, index) => (
-                            <tr key={index}>
-                                {state.columns.map((col, i) => {
-                                    if (col.key.toLowerCase().includes('date')) {
-                                        return (
-                                            <td key={`${index}-${i}`}>
-                                                {moment(item[col.key]).format(props.formatDate || 'DD/MM/YYYY')}
-                                            </td>
-                                        )
-                                    }
-                                    return <td key={`${index}-${i}`}>{item[col.key]}</td>
-                                })}
-                                {props.options && (
-                                    <td>
-                                        {props.options.onEditRow && (
-                                            <button onClick={() => onEditClick(item, props.options.onEditRow)}>
-                                                Edit
-                                            </button>
-                                        )}
-                                        {props.options.onDeleteRow && (
-                                            <button
-                                                onClick={() =>
-                                                    onDeleteClick(item, props.options.onDeleteRow, state, setState)
-                                                }>
-                                                Delete
-                                            </button>
-                                        )}
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                </tbody>
-            </table>
+            <div className='table-res'>
+                <table id='main-table'>
+                    <THead state={state} setState={setState} options={props.options} />
+                    <tbody>
+                        {!isArrayEmpty(paginationRows) &&
+                            paginationRows.map((item, index) => (
+                                <tr key={index}>
+                                    {state.columns.map((col, i) => {
+                                        if (col.key.toLowerCase().includes('date')) {
+                                            return (
+                                                <td key={`${index}-${i}`}>
+                                                    {moment(item[col.key]).format(props.formatDate || 'DD/MM/YYYY')}
+                                                </td>
+                                            )
+                                        }
+                                        return <td key={`${index}-${i}`}>{item[col.key]}</td>
+                                    })}
+                                    {props.options && (
+                                        <td>
+                                            {props.options.onEditRow && (
+                                                <button onClick={() => onEditClick(item, props.options.onEditRow)}>
+                                                    Edit
+                                                </button>
+                                            )}
+                                            {props.options.onDeleteRow && (
+                                                <button
+                                                    onClick={() =>
+                                                        onDeleteClick(item, props.options.onDeleteRow, state, setState)
+                                                    }>
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </td>
+                                    )}
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
+            </div>
             {!isArrayEmpty(dataRows) && (
                 <TFooter
                     total={dataRows.length}
