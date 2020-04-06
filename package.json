@@ -20,7 +20,7 @@
     },
     "license": "MIT",
     "peerDependencies": {
-        "mnr-decorator": "^1.0.2"
+        "mnr-decorator": "^1.0.4"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
@@ -31,13 +31,14 @@
         "@svgr/webpack": "^5.3.0",
         "@types/node": "^12.12.31",
         "@types/react": "^16.9.26",
+        "@types/react-dom": "^16.9.6",
         "babel-loader": "^8.1.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "css-loader": "^3.4.2",
         "html-webpack-plugin": "^4.0.3",
         "less": "^3.11.1",
         "less-loader": "^5.0.0",
-        "mnr-decorator": "^1.0.2",
+        "mnr-decorator": "^1.0.4",
         "rc-calendar": "^9.15.10",
         "rc-pagination": "^2.0.1",
         "react": "^16.13.1",
