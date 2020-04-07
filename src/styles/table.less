@@ -3,6 +3,7 @@
 @mainTableId: main-table;
 @borderNoneClass: 'border-none';
 
+
 .table-mobile {
     @media (max-width: 767px) {
         width: 100%;
@@ -11,6 +12,21 @@
 }
 
 @selectors: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
+
+.tagStatus() {
+    new: geekblue;
+    started: green;
+    finished :orange;
+    closed: grey;
+    canceled: grey;
+    reopened: purple;
+}
+
+.tagTracker() {
+    bug: red;
+    task: blue;
+}
+
 
 #@{mainTableId} {
     #fontFamily;
@@ -97,97 +113,6 @@
                 vertical-align: middle;
                 white-space: nowrap;
                 width: auto;
-                .mrn-btn-status {
-                    #button-status;
-                    &.active {
-                        color: #color[success];
-                        background-color: #backgroundColor[success];
-                    }
-                    &.inactive {
-                        color: #color[danger];
-                        background-color: #backgroundColor[danger];
-                    }
-                    &.nolmal {
-                        color: #color[secondary];
-                        background-color: #backgroundColor[secondary];
-                    }
-                }
-                // style for tag Tracker
-                .@{nameClassDefault}-tag{
-                    -webkit-box-sizing: border-box;
-                    box-sizing: border-box;
-                    margin: 0;
-                    font-variant: tabular-nums;
-                    list-style: none;
-                    -webkit-font-feature-settings: 'tnum';
-                    font-feature-settings: 'tnum';
-                    display: inline-block;
-                    height: auto;
-                    margin-right: 8px;
-                    padding: 0 7px;
-                    font-size: 12px;
-                    line-height: 20px;
-                    white-space: nowrap;
-                    border-radius: 2px;
-                    cursor: default;
-                    opacity: 1;
-                    border-width: 1px;
-                    border: 1px solid #d9d9d9;
-                    -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-                    transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-                    &-new{
-                        #color-tag-geekblue;
-                    }
-                    &-started{
-                        #color-tag-green 
-                    }
-                    &-task {
-                        #color-tag-blue;
-                        background: #fff;
-                    }
-                    &-bug {
-                        #color-tag-red;
-                        background: #fff;
-                    }
-                    &-finished{
-                        #color-tag-orange
-                    }
-
-                    &-magenta {
-                        #color-tag-magenta;
-                    }
-                    &-red {
-                        #color-tag-red;
-                    }
-                    &-volcano {
-                        #color-tag-volcano
-                    }
-                    &-orange {
-                        #color-tag-orange;
-                    }
-                    &-gold {
-                        #color-tag-gold ;
-                    }
-                    &-lime {
-                        #color-tag-lime;
-                    }
-                    &-green {
-                        #color-tag-green;
-                    }
-                    &-cyan {
-                        #color-tag-cyan;
-                    }
-                    &-blue {
-                        #color-tag-blue;
-                    }
-                    &-geekblue {
-                        #color-tag-geekblue;
-                    }
-                    &-purple {
-                        #color-tag-purple;
-                    }
-                }
-                // button 
                 .@{nameClassDefault}-button{
                     background: #ffffff;
                     margin-right: 8px;
@@ -376,4 +301,67 @@
             }
         }
       });
+
+    each(.tagTracker(), .(@v, @k, @i) {
+        @color: #color[$@v];
+        @background: #background[$@v];
+        @border: #border[$@v];
+        .mnr-tag-@{k}{
+            color: @color;
+            background-color: @background;
+            border-color: #fff;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            font-variant: tabular-nums;
+            list-style: none;
+            -webkit-font-feature-settings: 'tnum';
+            font-feature-settings: 'tnum';
+            display: inline-block;
+            height: auto;
+            margin-right: 8px;
+            padding: 0 7px;
+            font-size: 12px;
+            line-height: 20px;
+            white-space: nowrap;
+            border-radius: 2px;
+            cursor: default;
+            opacity: 1;
+            border-width: 1px;
+            border: 1px solid #d9d9d9;
+            -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        }
+    })
+
+    each(.tagStatus(), .(@v, @k, @i) {
+        @color: #color[$@v];
+        @border: #border[$@v];
+        .mnr-tag-@{k}{
+            color: @color;
+            background-color: #fff;
+            border-color: @border;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            font-variant: tabular-nums;
+            list-style: none;
+            -webkit-font-feature-settings: 'tnum';
+            font-feature-settings: 'tnum';
+            display: inline-block;
+            height: auto;
+            margin-right: 8px;
+            padding: 0 7px;
+            font-size: 12px;
+            line-height: 20px;
+            white-space: nowrap;
+            border-radius: 2px;
+            cursor: default;
+            opacity: 1;
+            border-width: 1px;
+            border: 1px solid #d9d9d9;
+            -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        }
+    })
 }

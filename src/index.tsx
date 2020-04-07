@@ -97,11 +97,7 @@ const getValueByCase = (col: ColumnProps, item: any, formatDate?: string): JSX.E
     if (col.lookup) {
         const itemValue = item[col.key]
         const lookupValue = col.lookup[itemValue]
-        if (col.key.includes('percent')) {
-            return <span className={`mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
-        } else {
-            return <span className={`mnr-tag mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
-        }
+        return <span className={`mnr-tag-${lookupValue.toLowerCase()}`}>{lookupValue}</span>
     }
     return <>{item[col.key]}</>
 }
