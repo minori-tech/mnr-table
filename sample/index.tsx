@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import { ColumnSpec } from 'mnr-decorator'
 import { Table } from '../src/index'
@@ -29,7 +29,7 @@ const percentLookup = Object.freeze({
 class Demo extends PureComponent {
     @ColumnSpec({ label: 'Tracker', lookup: Object.freeze({ 1: 'Task', 2: 'Bug' }) })
     tracker: string
-    @ColumnSpec({ label: 'Status', lookup: statusLookup, isFilter: 'single' })
+    @ColumnSpec({ label: 'Status', lookup: statusLookup })
     status: string
     @ColumnSpec({ label: 'Subject' })
     subject: string
