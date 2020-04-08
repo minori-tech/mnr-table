@@ -92,7 +92,39 @@ const getDataRowsByFilter = (filter: any, dataSource: any[]) => {
 
 const getValueByCase = (col: ColumnProps, item: any, formatDate?: string): JSX.Element => {
     if (col.key.toLowerCase().includes('date')) {
-        return <>{moment(item[col.key]).format(formatDate || 'DD/MM/YYYY')}</>
+        if (item[col.key] === item.dueDate) {
+            const newDate = moment().format('YYYY-MM-DD')
+            const dueDate = moment(item.dueDate).format(formatDate || 'YYYY-MM-DD')
+            const timeRemaining = moment(item.dueDate).get('hour') - moment(newDate).get('hour')
+            //điều kiên gần hết deadline còn 4 tiếng
+            if (moment(dueDate).isSame(newDate) && (timeRemaining <= 4 || timeRemaining === 0)) {
+                return (
+                    <div className='mnr-date-about-to-expire'>
+                        {moment(item.dueDate).format(formatDate || 'DD/MM/YYYY')}
+                    </div>
+                )
+            }
+            //chưa hết deadline
+            else if (
+                !moment(dueDate).isSameOrBefore(newDate) ||
+                (moment(dueDate).isSame(newDate) && timeRemaining > 4)
+            ) {
+                return <div className='mnr-date-active'>{moment(item.dueDate).format(formatDate || 'DD/MM/YYYY')}</div>
+            }
+            // quá deadline
+            else if (
+                moment(dueDate).isSameOrBefore(newDate) ||
+                (moment(dueDate).isSame(newDate) && timeRemaining < 0)
+            ) {
+                return (
+                    <div className='mnr-date-over-time'>{moment(item.dueDate).format(formatDate || 'DD/MM/YYYY')}</div>
+                )
+            }
+        }
+        // another time dueDate
+        else {
+            return <>{moment(item[col.key]).format(formatDate || 'DD/MM/YYYY hh')}</>
+        }
     }
     if (col.lookup) {
         const itemValue = item[col.key]

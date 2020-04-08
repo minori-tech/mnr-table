@@ -13,6 +13,14 @@
 
 @selectors: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 
+// color date 
+// key is type class mnr-date-about-to-exprire
+
+.colorDate() {
+    over-time: red;
+    about-to-expire: orange;
+    active: blue;
+}
 .tagStatus() {
     new: geekblue;
     started: green;
@@ -34,12 +42,6 @@
     color: #000;
     width: 100%;
     border: #border[borderdefault];
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: 0 1px 1px #color[default];
-    -moz-box-shadow: 0 1px 1px #color[default];
-    box-shadow: 0 1px 1px #color[default];
     border-spacing: 0;
     thead {
         border-collapse: separate;
@@ -54,15 +56,9 @@
                 background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
                 background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
                 background-image: linear-gradient(top, #ebf3fc, #dce9f9);
-                -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-                -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-                box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
                 border-top: none;
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
                 padding: 10px;
-                &:first-child {
-                    border-top-left-radius: 6px;
-                }
                 &.@{nameClassDefault}-border-none {
                     border: #border[bordernone];
                 }
@@ -99,9 +95,6 @@
             }
             &:nth-child(even) {
                 background: #f5f5f5;
-                -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-                -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
-                box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
             }
             td {
                 border-top: #border[borderdefault];
@@ -119,7 +112,6 @@
                     padding: 0 7px;
                     font-size: 12px;
                     padding: 5px 13px;
-                    border-radius: 2px;
                     cursor: pointer;
                     opacity: 1;
                     border-width: 1px;
@@ -130,7 +122,27 @@
             }
         }
     }
-    
+    //css avatar 
+    .@{nameClassDefault}-box-avatar {
+        display: flex;
+        align-items: center;
+        .@{nameClassDefault}-item-avatar{
+            position: relative;
+            height: 27px;
+            width: 29px;
+            border-radius: 14px;
+            background-color: #e3165b;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
 
     // radio button - checkbox Enter by type  
     @supports (-webkit-appearance: none) or (-moz-appearance: none) {
@@ -211,48 +223,6 @@
                 margin-left: 4px;
             }
         }
-        input[type='checkbox'] {
-            &:not(.switch) {
-                border-radius: 3px;
-                &:after {
-                    width: 5px;
-                    height: 9px;
-                    border: 2px solid var(--active-inner);
-                    border-top: 0;
-                    border-left: 0;
-                    left: 4px;
-                    top: 0px;
-                    transform: rotate(var(--r, 20deg));
-                }
-                &:checked {
-                    --r: 43deg;
-                }
-            }
-            &.switch {
-                width: 38px;
-                border-radius: 11px;
-                &:after {
-                    left: 2px;
-                    top: 1px;
-                    border-radius: 50%;
-                    width: 13px;
-                    height: 13px;
-                    background: var(--ab, var(--border));
-                    transform: translateX(var(--x, 0));
-                }
-                &:checked {
-                    --ab: var(--active-inner);
-                    --x: 17px;
-                }
-                &:disabled {
-                    &:not(:checked) {
-                        &:after {
-                            opacity: 0.6;
-                        }
-                    }
-                }
-            }
-        }
         input[type='radio'] {
             border-radius: 50%;
             &:after {
@@ -271,6 +241,8 @@
 
     // progress css common 10% -> 100%
     each(@selectors, {
+        @color: if((@value = 100), #52c41a, #1890ff);
+        // @percent:  ('@value * 1%)';
         .mnr-tag-@{value} {
             width: 100%;
             position: relative;
@@ -290,7 +262,7 @@
                 width: @value * 1%;
                 content: '';
                 display: block;
-                background: cornflowerblue;
+                background: @color;
                 height: 100%;
                 border-radius: 5px;
                 position: absolute;
@@ -299,17 +271,24 @@
                 right: 0;
                 bottom: 0;
             }
+            &::before{
+                content: replace("One%", "one", @value, "gi");
+                display: block;
+                position: absolute;
+                color: #000;
+                top: -15px;
+                right: 0;
+            }
         }
       });
 
     each(.tagTracker(), .(@v, @k, @i) {
         @color: #color[$@v];
-        @background: #background[$@v];
         @border: #border[$@v];
         .mnr-tag-@{k}{
             color: @color;
-            background-color: @background;
-            border-color: #fff;
+            background-color: #fff;
+            border: 1px solid @color;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
             margin: 0;
@@ -324,11 +303,8 @@
             font-size: 12px;
             line-height: 20px;
             white-space: nowrap;
-            border-radius: 2px;
             cursor: default;
             opacity: 1;
-            border-width: 1px;
-            border: 1px solid #d9d9d9;
             -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
             transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
         }
@@ -336,11 +312,12 @@
 
     each(.tagStatus(), .(@v, @k, @i) {
         @color: #color[$@v];
+        @background: #background[$@v];
         @border: #border[$@v];
         .mnr-tag-@{k}{
             color: @color;
-            background-color: #fff;
-            border-color: @border;
+            background-color:  @background;
+            border: 1px solid @border;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
             margin: 0;
@@ -355,13 +332,18 @@
             font-size: 12px;
             line-height: 20px;
             white-space: nowrap;
-            border-radius: 2px;
             cursor: default;
             opacity: 1;
-            border-width: 1px;
-            border: 1px solid #d9d9d9;
             -webkit-transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
             transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        }
+    })
+
+    // css date
+    each(.colorDate(), .(@v, @k, @i) {
+        @color: #color[$@v];
+        .mnr-date-@{k}{
+            color: @color;
         }
     })
 }
