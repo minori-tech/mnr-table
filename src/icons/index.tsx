@@ -1,5 +1,4 @@
-import React, { MouseEvent, CSSProperties } from 'react'
-
+import React, { CSSProperties, MouseEvent } from 'react'
 import FilterSVG from '../assets/icons/filter.svg'
 
 interface IconsProps {

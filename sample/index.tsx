@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import { ColumnSpec } from 'mnr-decorator'
-import { Table } from '../src/index'
+import 'reflect-metadata'
+import { Align, Column, Filter, Render, Responsive, Sort, Table, TableProps } from '../src/index'
 
 const statusLookup = Object.freeze({
     1: 'New',
@@ -26,34 +26,36 @@ const percentLookup = Object.freeze({
     100: '100',
 })
 
-class Demo extends PureComponent {
-    @ColumnSpec({ label: 'Tracker', lookup: Object.freeze({ 1: 'Task', 2: 'Bug' }) })
-    tracker: string
-    @ColumnSpec({ label: 'Status', lookup: statusLookup })
-    status: string
-    @ColumnSpec({ label: 'Subject' })
-    subject: string
-    // @ColumnSpec({ label: 'Author' })
-    // author: string
-    // @ColumnSpec({ label: 'Assignee' })
-    // assignee: any
-    @ColumnSpec({ label: 'Start Date' })
-    startDate: Date
-    @ColumnSpec({ label: 'Due Date' })
-    dueDate: Date
-    @ColumnSpec({ label: '% Done', lookup: percentLookup })
-    percentDone: any
+class Sample {
+    @Column({ key: 'id', title: () => 'ID', className: 'xxx' })
+    @Render({ render: (record: Sample) => <>{record.id}</> })
+    @Align({ align: 'center' })
+    id?: string
 
-    getDataSource = async () => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(require('./data.json'))
-            }, 1000) // indicating pending time for API requesting
-        })
-    }
-    render() {
-        return <Table getDataSource={this.getDataSource} columnSpec={this} />
-    }
+    @Column({ key: 'number', title: 'Number', className: 'xxx' })
+    @Filter({ type: 'text' })
+    @Align({ align: 'right' })
+    number?: number
+
+    @Column({ key: 'parentIssue', title: 'Parent Issue', className: 'xxx' })
+    @Responsive({ responsive: ['lg', 'xl'] })
+    @Align({ align: 'right' })
+    @Sort({ sort: true })
+    parentIssue?: number
+
+    tracker?: number
+    status?: number
+    subject?: string
+    percentDone?: number
+    startDate?: Date
+    dueDate?: Date
+    createDate?: number
+    updateDate?: number
+}
+
+function Demo() {
+    const props = new TableProps(Sample, '/')
+    return <Table {...props} />
 }
 
 ReactDOM.render(<Demo />, document.getElementById('container'))

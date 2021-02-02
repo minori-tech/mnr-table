@@ -4277,11 +4277,6 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mnr-decorator@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/mnr-decorator/-/mnr-decorator-1.0.4.tgz#938c473b5842f3a345897ff3f096cfb4d4b866c8"
-  integrity sha512-R1pk6wgn1n7MNHlSNqt9fOyhMmwVbzojBG9hYWJbrEmS8f4XlgoXhDs8hAiBceWETIeAhqFqonr7yS1X/NqsNQ==
-
 moment@2.x:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
@@ -5202,11 +5197,6 @@ readdirp@^2.2.1:
     graceful-fs "^4.1.11"
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
-
-reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"

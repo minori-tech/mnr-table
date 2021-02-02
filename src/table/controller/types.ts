@@ -1,0 +1,1 @@
+export const TABLE_INITIAL_DATA = 'table/TABLE_INITIAL_DATA'

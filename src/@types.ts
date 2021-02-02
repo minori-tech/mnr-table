@@ -1,0 +1,80 @@
+export type FilterType = 'multi' | 'single' | 'date' | undefined
+
+export type Lookup = Record<number | string, string>
+export type Translate = (key?: string) => string
+export declare type Breakpoint = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'
+
+export interface BaseOptions {
+    key: string
+    title: string | Translate
+    className?: string
+}
+
+export interface RenderOptions {
+    render?: (record: unknown, index?: number) => JSX.Element
+}
+
+export interface ResponsiveOptions {
+    responsive?: Breakpoint[]
+}
+
+export interface AlignOptions {
+    align?: 'left' | 'center' | 'right'
+}
+
+export interface SortOptions {
+    sort?: boolean
+}
+
+export interface FilterOptions {
+    type: 'single' | 'multiple' | 'text'
+    dataSource?: () => Promise<{ key: string; value: string }[]> | { key: string; value: string }[]
+}
+
+export interface ColumnOptions extends RenderOptions {
+    key: string
+    title: string | Translate
+    className?: string
+    type?: string
+    responsive?: string[]
+    align?: string
+    sort?: boolean
+}
+
+export interface TableOptions {
+    onEditRow?: (id: string) => void
+    onDeleteRow?: (id: string) => Promise<any>
+}
+
+export interface TableProps<T extends object = any> {
+    getDataSource(): Promise<T>
+    formatDate?: string
+    options?: TableOptions
+}
+
+export interface TableState<T> {
+    loading: boolean
+    columns: ColumnOptions[]
+    dataSource?: T[]
+    cachedDataSource?: string
+    enableFilter?: boolean
+    filter?: any
+    pagination?: { page?: number; size?: number }
+}
+
+export type TableAction<T extends object = any> = { type: string; payload?: any } & T
+
+export interface TableStore<T extends object = any> {
+    baseURL: string
+    columns?: BaseOptions[]
+    columnKeys?: string[]
+    dataSource?: Array<T>
+    isLoading?: boolean
+    total?: number
+    limit?: number
+    currentPage?: number
+    isShowFilter?: boolean
+    isShowExportModal?: boolean
+    // filter?: Record<string, any>
+    dispatch?: React.Dispatch<TableAction<T>>
+}

@@ -42,10 +42,8 @@ module.exports = {
             {
                 test: /\.(ttf|eot|woff|woff2)$/,
                 loader: 'file-loader',
-                options: {
-                  name: 'fonts/[name].[ext]'
-                }
-              },
+                options: { name: 'fonts/[name].[ext]' }
+            },
             {
                 test: /\.css$/,
                 use: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }]
@@ -71,7 +69,5 @@ module.exports = {
             }
         ]
     },
-    performance: {
-        hints: false
-    }
+    performance: { hints: false }
 }
