@@ -1,13 +1,14 @@
-export type FilterType = 'multi' | 'single' | 'date' | undefined
+export type FilterType = 'multi' | 'date' | undefined
 
 export type Lookup = Record<number | string, string>
 export type Translate = (key?: string) => string
-export declare type Breakpoint = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'
+export declare type Breakpoint = 'mobile' | 'tablet' | 'desktop' | 'widescreen' | 'fullhd'
 
 export interface BaseOptions {
     key: string
     title: string | Translate
     className?: string
+    sort?: boolean
 }
 
 export interface RenderOptions {
@@ -22,20 +23,16 @@ export interface AlignOptions {
     align?: 'left' | 'center' | 'right'
 }
 
-export interface SortOptions {
-    sort?: boolean
-}
-
 export interface FilterOptions {
-    type: 'single' | 'multiple' | 'text'
-    dataSource?: () => Promise<{ key: string; value: string }[]> | { key: string; value: string }[]
+    filterType?: FilterType
+    dataSource?: () => Promise<{ key: string; value: string }[]>
 }
 
-export interface ColumnOptions extends RenderOptions {
+export interface ColumnOptions extends RenderOptions, FilterOptions {
     key: string
-    title: string | Translate
+    title: string | Translate | React.ReactNode
     className?: string
-    type?: string
+    filterType?: FilterType
     responsive?: string[]
     align?: string
     sort?: boolean

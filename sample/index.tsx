@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'reflect-metadata'
-import { Align, Column, Filter, Render, Responsive, Sort, Table, TableProps } from '../src/index'
+import { Table } from '../src'
+import { Column, Filter, Render, Responsive, TableProps } from '../src/index'
 
 const statusLookup = Object.freeze({
     1: 'New',
@@ -9,7 +9,7 @@ const statusLookup = Object.freeze({
     3: 'Finished',
     4: 'Closed',
     5: 'Canceled',
-    6: 'Reopened',
+    6: 'Reopened'
 })
 
 const percentLookup = Object.freeze({
@@ -23,26 +23,38 @@ const percentLookup = Object.freeze({
     70: '70',
     80: '80',
     90: '90',
-    100: '100',
+    100: '100'
 })
 
+function renderId(record: Sample): JSX.Element {
+    return <>{record.id}</>
+}
+
 class Sample {
-    @Column({ key: 'id', title: () => 'ID', className: 'xxx' })
+    @Column({ key: 'id', title: () => 'ID', className: 'xxx', sort: true })
     @Render({ render: (record: Sample) => <>{record.id}</> })
-    @Align({ align: 'center' })
+    // @Align({ align: 'center' })
     id?: string
 
-    @Column({ key: 'number', title: 'Number', className: 'xxx' })
-    @Filter({ type: 'text' })
-    @Align({ align: 'right' })
+    @Column({ key: 'number', title: 'Number', className: 'xxx', sort: true })
+    @Filter({ filterType: 'date' })
+    // @Align({ align: 'right' })
     number?: number
 
     @Column({ key: 'parentIssue', title: 'Parent Issue', className: 'xxx' })
-    @Responsive({ responsive: ['lg', 'xl'] })
-    @Align({ align: 'right' })
-    @Sort({ sort: true })
+    @Responsive({ responsive: ['mobile', 'tablet'] })
+    // @Align({ align: 'right' })
     parentIssue?: number
 
+    @Column({ key: 'tracker', title: 'Tracker', className: 'xxx' })
+    @Filter({
+        filterType: 'multi',
+        dataSource: () =>
+            Promise.resolve([
+                { key: '1', value: 'Value 1' },
+                { key: '2', value: 'Value 2' }
+            ])
+    })
     tracker?: number
     status?: number
     subject?: string

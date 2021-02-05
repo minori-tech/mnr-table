@@ -1,5 +1,5 @@
-import 'reflect-metadata'
-import { AlignOptions, BaseOptions, FilterOptions, RenderOptions, ResponsiveOptions, SortOptions } from '../@types'
+import { AlignOptions, BaseOptions, ColumnOptions, FilterOptions, RenderOptions, ResponsiveOptions } from '../@types'
+import { renderTHCell } from '../components/thead'
 
 type ColumnDecorator = (object: any, propertyName: string) => void
 
@@ -27,12 +27,6 @@ export function Align(options?: AlignOptions): ColumnDecorator {
     }
 }
 
-export function Sort(options?: SortOptions): ColumnDecorator {
-    return function (object: any, propertyName: string) {
-        addMetadata(object, propertyName, options)
-    }
-}
-
 export function Filter(options?: FilterOptions): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
@@ -48,15 +42,17 @@ export function addMetadata(target: Object, key: string, value: object) {
     _metaColumns.set(metaKey, Object.assign(value, _metaColumns.get(metaKey)))
 }
 
-export function getMetadataColumns(key: string): Record<string, unknown> {
+export function getMetadataColumns(key: string): BaseOptions[] {
     const regex = new RegExp('\\b' + key + '\\b')
-    const columns: unknown[] = []
-    const columnKeys: string[] = []
-    _metaColumns.forEach((value, key) => {
+    const columns: object[] = []
+    _metaColumns.forEach((value: ColumnOptions) => {
         if (regex.test(key)) {
+            if (!value.render) {
+                Object.assign(value, { dataIndex: value['key'] })
+            }
+            value.title = renderTHCell({ col: value })
             columns.push(value)
-            columnKeys.push(value['key'])
         }
     })
-    return { columns, columnKeys }
+    return columns as BaseOptions[]
 }

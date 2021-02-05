@@ -1,0 +1,82 @@
+@import '../../node_modules/bulma/css/bulma.css';
+@import '../../node_modules/rc-dropdown//assets/index.css';
+@import '../../node_modules/rc-calendar/assets/index.css';
+
+.mnr-table table {
+    width: 100%;
+}
+.mnr-table th {
+    user-select: none;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.mnr-table-cell > div {
+    display: flex;
+    justify-content: space-between;
+}
+.mnr-table-cell .th-filter > button {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+/* span.sorting,
+span.sorting_asc,
+span.sorting_desc {
+    cursor: pointer;
+    position: relative;
+}
+span.sorting::after,
+span.sorting_asc::after,
+span.sorting_desc::after {
+    left: 1em;
+    content: '↑';
+}
+span.sorting::before,
+span.sorting_asc::before,
+span.sorting_desc::before {
+    left: 0.5em;
+    content: '↓';
+}
+span.sorting::after,
+span.sorting::before,
+span.sorting_asc::after,
+span.sorting_asc::before,
+span.sorting_desc::after,
+span.sorting_desc::before {
+    position: absolute;
+    display: block;
+    opacity: 0.3;
+    bottom: 0.7em;
+}
+span.sorting_asc::after,
+span.sorting_desc::before {
+    opacity: 1;
+} */
+span.icon {
+    cursor: pointer;
+}
+span.icon > svg {
+    width: 12px;
+    height: 12px;
+}
+.dropdown-portal > .dropdown-menu {
+    min-width: max-content;
+    left: unset;
+}
+.dropdown-menu > .dropdown-content {
+    padding: 0.5em;
+}
+.dropdown-content > .is-grouped {
+    justify-content: flex-end;
+}
+/* span.th-filter {
+    padding-right: 0;
+    padding-left: 0;
+}
+span.is-1 {
+    width: 0;
+} */
+/* .mnr-table tr td {
+    width: 1%;
+    white-space: nowrap;
+} */
