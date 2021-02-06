@@ -2,7 +2,7 @@ import Menu, { MenuItem } from 'rc-menu'
 import 'rc-menu/assets/index.css'
 import React from 'react'
 
-export function Multi({ dataSource }: { dataSource: { key: string; value: string }[] }) {
+export function FilterSelect({ dataSource }: { dataSource: { key: string; value: string }[] }) {
     return (
         <Menu multiple>
             {dataSource?.map((d) => (

@@ -60,11 +60,10 @@ export interface TableState<T> {
 }
 
 export type TableAction<T extends object = any> = { type: string; payload?: any } & T
+export type Constructor<T> = new (...args: any[]) => T
 
 export interface TableStore<T extends object = any> {
     baseURL: string
-    columns?: BaseOptions[]
-    columnKeys?: string[]
     dataSource?: Array<T>
     isLoading?: boolean
     total?: number
