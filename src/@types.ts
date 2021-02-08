@@ -8,6 +8,7 @@ export interface BaseOptions {
     key: string
     title: string | Translate
     className?: string
+    width?: string | number
     sort?: boolean
 }
 

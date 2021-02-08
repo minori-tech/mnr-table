@@ -1,1 +1,2 @@
-export const TABLE_INITIAL_DATA = 'table/TABLE_INITIAL_DATA'
+export const TABLE_LOADING = 'table/TABLE_LOADING'
+export const TABLE_DATA = 'table/TABLE_DATA'

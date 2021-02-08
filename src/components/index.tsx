@@ -1,14 +1,16 @@
 import RcTable from 'rc-table'
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
+import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { Constructor, TableOptions, TableStore } from '../@types'
 import { getMetadataColumns } from '../metadata'
 import '../styles/table.css'
-import { doFetchData } from './controller/action'
+import { doCancelRequest, doFetchData } from './controller/action'
 import { tableReducer } from './controller/reducer'
 
 export class TableProps<T extends object = any> {
     baseURL: string
+    bearerToken?: string
     metadata: Constructor<T>
     options?: TableOptions
     constructor(metadata: Constructor<T>, baseURL: string, options?: TableOptions) {
@@ -21,16 +23,20 @@ export class TableProps<T extends object = any> {
 export const TableContext = createContext<TableStore>({ baseURL: '', dispatch: () => null })
 
 export function Table<T extends object = any>(props: TableProps<T>) {
-    const { baseURL, metadata } = props
+    const { baseURL, bearerToken, metadata } = props
     const initialStore: TableStore = useMemo<TableStore>(() => {
         return { baseURL, isLoading: true }
     }, [baseURL])
     const [state, dispatch] = useReducer(tableReducer, initialStore)
 
     const columns = useMemo(() => getMetadataColumns(metadata.name), [baseURL])
+    const history = useHistory()
 
     useEffect(() => {
-        doFetchData(baseURL, dispatch)
+        doFetchData({ baseAPI: baseURL, bearerToken, history, dispatch })
+        return () => {
+            doCancelRequest()
+        }
     }, [])
 
     return (

@@ -1,50 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Table } from '../src'
 import { Column, Filter, Render, Responsive, TableProps } from '../src/index'
-
-const statusLookup = Object.freeze({
-    1: 'New',
-    2: 'Started',
-    3: 'Finished',
-    4: 'Closed',
-    5: 'Canceled',
-    6: 'Reopened'
-})
-
-const percentLookup = Object.freeze({
-    0: '0',
-    10: '10',
-    20: '20',
-    30: '30',
-    40: '40',
-    50: '50',
-    60: '60',
-    70: '70',
-    80: '80',
-    90: '90',
-    100: '100'
-})
 
 function renderId(record: Sample): JSX.Element {
     return <>{record.id}</>
 }
 
 class Sample {
-    @Column({ key: 'id', title: () => 'ID', className: 'xxx', sort: true })
-    @Render({ render: (record: Sample) => <>{record.id}</> })
+    @Column({ key: 'id', title: () => 'ID', className: 'xxx', width: 100, sort: true })
+    @Render({ render: renderId })
     // @Align({ align: 'center' })
     id?: string
 
-    @Column({ key: 'number', title: 'Number', className: 'xxx', sort: true })
+    @Column({ key: 'title', title: 'Title', sort: true })
     @Filter({ filterType: 'date' })
     // @Align({ align: 'right' })
-    number?: number
+    title?: number
 
-    @Column({ key: 'parentIssue', title: 'Parent Issue', className: 'xxx' })
+    @Column({ key: 'body', title: 'Body', className: 'xxx' })
     @Responsive({ responsive: ['mobile', 'tablet'] })
     // @Align({ align: 'right' })
-    parentIssue?: number
+    body?: number
 
     @Column({ key: 'tracker', title: 'Tracker', className: 'xxx' })
     @Filter({
@@ -66,8 +44,12 @@ class Sample {
 }
 
 function Demo() {
-    const props = new TableProps(Sample, '/')
-    return <Table {...props} />
+    const props = new TableProps(Sample, 'https://jsonplaceholder.typicode.com/posts')
+    return (
+        <BrowserRouter>
+            <Table {...props} />
+        </BrowserRouter>
+    )
 }
 
 ReactDOM.render(<Demo />, document.getElementById('container'))
