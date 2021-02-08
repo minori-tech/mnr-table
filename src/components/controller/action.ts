@@ -2,7 +2,7 @@ import { History } from 'history'
 import { Observable, Subscription } from 'rxjs'
 import { AjaxResponse } from 'rxjs/ajax'
 import { AjaxObservable } from 'rxjs/internal/observable/dom/AjaxObservable'
-import { TableAction } from '../../@types'
+import { APIResponse, TableAction } from '../../@types'
 import { TABLE_DATA, TABLE_LOADING } from './types'
 
 enum HttpMethod {
@@ -46,22 +46,7 @@ function buildQueryString(search: Search): string {
     return searchParams.toString()
 }
 
-export function doFetchData({ baseAPI, bearerToken, history, dispatch }: ActionOptions) {
-    doCancelRequest()
-
-    _baseAPI = baseAPI
-    _bearerToken = bearerToken
-    _history = history
-    _dispatch = dispatch
-    _subscription = createRequest({ url: baseAPI, bearerToken, params: buildQueryString({}) }).subscribe(
-        (response: AjaxResponse) => {
-            dispatch({ type: TABLE_DATA, payload: response.response })
-        }
-    )
-}
-
-export function doSort(key: string, sort: 'ASC' | 'DESC' | null) {
-    const search = buildQueryString({ sortKey: sort && key, sortOrder: sort })
+function doRequest(search: string) {
     doCancelRequest()
 
     _dispatch({ type: TABLE_LOADING })
@@ -74,13 +59,33 @@ export function doSort(key: string, sort: 'ASC' | 'DESC' | null) {
     )
 }
 
-export function doPaging(key: string, sort: 'ASC' | 'DESC' | undefined) {
-    console.log('key', key, sort)
-    // return new Promise((resolve) => {
-    //     setTimeout(async () => {
-    //         resolve(dispatch({ type: TABLE_INITIAL_DATA, payload: data }))
-    //     }, 1000) // indicating pending time for API requesting
-    // })
+export function doFetchData({ baseAPI, bearerToken, history, dispatch }: ActionOptions) {
+    doCancelRequest()
+
+    _baseAPI = baseAPI
+    _bearerToken = bearerToken
+    _history = history
+    _dispatch = dispatch
+    _subscription = createRequest({ url: baseAPI, bearerToken, params: buildQueryString({}) }).subscribe(
+        (response: AjaxResponse) => {
+            // let total: number, page: number, limit: number
+            let apiResp: APIResponse
+            if (Array.isArray(response.response)) {
+                apiResp = { data: response.response, limit: 10, page: 1, total: response.response.length }
+            } else {
+                apiResp = response.response
+            }
+            dispatch({ type: TABLE_DATA, payload: apiResp })
+        }
+    )
+}
+
+export function doSort(key: string, sort: 'ASC' | 'DESC' | null) {
+    doRequest(buildQueryString({ sortKey: sort && key, sortOrder: sort }))
+}
+
+export function doPaging(page: number, size: number) {
+    doRequest(buildQueryString({ page }))
 }
 
 export function doFilter(key: string, value: string | number | boolean | undefined) {

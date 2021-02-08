@@ -65,7 +65,7 @@ export type Constructor<T> = new (...args: any[]) => T
 
 export interface TableStore<T extends object = any> {
     baseURL: string
-    dataSource?: Array<T>
+    data?: Array<T>
     isLoading?: boolean
     total?: number
     limit?: number
@@ -75,3 +75,5 @@ export interface TableStore<T extends object = any> {
     // filter?: Record<string, any>
     dispatch?: React.Dispatch<TableAction<T>>
 }
+
+export type APIResponse = { total: number; page: number; limit: number; data: object[] }

@@ -5,8 +5,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { Constructor, TableOptions, TableStore } from '../@types'
 import { getMetadataColumns } from '../metadata'
 import '../styles/table.css'
-import { doCancelRequest, doFetchData } from './controller/action'
+import { doCancelRequest, doFetchData, doPaging } from './controller/action'
 import { tableReducer } from './controller/reducer'
+import { TFooter } from './tfooter'
 
 export class TableProps<T extends object = any> {
     baseURL: string
@@ -24,12 +25,21 @@ export const TableContext = createContext<TableStore>({ baseURL: '', dispatch: (
 
 export function Table<T extends object = any>(props: TableProps<T>) {
     const { baseURL, bearerToken, metadata } = props
+
     const initialStore: TableStore = useMemo<TableStore>(() => {
         return { baseURL, isLoading: true }
     }, [baseURL])
-    const [state, dispatch] = useReducer(tableReducer, initialStore)
 
-    const columns = useMemo(() => getMetadataColumns(metadata.name, new URLSearchParams(location.search)), [baseURL])
+    const initialValues = useMemo(() => {
+        return new URLSearchParams(location.search)
+    }, [baseURL])
+
+    const currentPage = useMemo(() => {
+        return initialValues.get('page') ? parseInt(initialValues.get('page')) : 1
+    }, [baseURL])
+
+    const [state, dispatch] = useReducer(tableReducer, initialStore)
+    const columns = useMemo(() => getMetadataColumns(metadata.name, initialValues), [baseURL])
     const history = useHistory()
 
     useEffect(() => {
@@ -47,16 +57,17 @@ export function Table<T extends object = any>(props: TableProps<T>) {
                     prefixCls='mnr-table'
                     className='table'
                     columns={columns}
-                    data={state.dataSource}
+                    data={state.data}
                 />
             </div>
-            {/* {!isArrayEmpty(dataRows) && (
+            {state.data && (
                 <TFooter
-                    total={dataRows.length}
+                    defaultCurrent={currentPage}
+                    total={state.total}
                     defaultPageSize={10}
-                    onChange={(page, size) => onPageChange(page, size, setState)}
+                    onChange={(page, size) => doPaging(page, size)}
                 />
-            )} */}
+            )}
         </TableContext.Provider>
     )
 }

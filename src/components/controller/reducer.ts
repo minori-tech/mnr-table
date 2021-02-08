@@ -4,7 +4,7 @@ import { TABLE_DATA } from './types'
 export function tableReducer(state: TableStore, action: TableAction): TableStore {
     switch (action.type) {
         case TABLE_DATA:
-            return { ...state, dataSource: action.payload }
+            return { ...state, ...action.payload }
         default:
             return state
     }

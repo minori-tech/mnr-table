@@ -1,4 +1,4 @@
-import { ColumnOptions } from '../../@types'
+import { ColumnOptions } from '../@types'
 
 const HIDDEN_CLASS = {
     mobile: 'is-hidden-mobile',
