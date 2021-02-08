@@ -9,10 +9,13 @@ import { doCancelRequest, doFetchData, doPaging } from './controller/action'
 import { tableReducer } from './controller/reducer'
 import { TFooter } from './tfooter'
 
+const PAGE_SIZE = 10
+
 export class TableProps<T extends object = any> {
     baseURL: string
     bearerToken?: string
     metadata: Constructor<T>
+    pageSize?: number
     options?: TableOptions
     constructor(metadata: Constructor<T>, baseURL: string, options?: TableOptions) {
         this.metadata = metadata
@@ -24,7 +27,7 @@ export class TableProps<T extends object = any> {
 export const TableContext = createContext<TableStore>({ baseURL: '', dispatch: () => null })
 
 export function Table<T extends object = any>(props: TableProps<T>) {
-    const { baseURL, bearerToken, metadata } = props
+    const { baseURL, bearerToken, pageSize = PAGE_SIZE, metadata } = props
 
     const initialStore: TableStore = useMemo<TableStore>(() => {
         return { baseURL, isLoading: true }
@@ -64,7 +67,7 @@ export function Table<T extends object = any>(props: TableProps<T>) {
                 <TFooter
                     defaultCurrent={currentPage}
                     total={state.total}
-                    defaultPageSize={10}
+                    defaultPageSize={pageSize}
                     onChange={(page, size) => doPaging(page, size)}
                 />
             )}

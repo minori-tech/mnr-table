@@ -37,6 +37,7 @@ export interface ColumnOptions extends RenderOptions, FilterOptions {
     responsive?: string[]
     align?: string
     sort?: boolean
+    dataIndex?: string
 }
 
 export interface TableOptions {

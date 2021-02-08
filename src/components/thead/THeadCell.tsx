@@ -1,9 +1,9 @@
 import { faFilter, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import RcDropdown from 'rc-dropdown'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { ColumnOptions } from '../../@types'
-import { doSort } from '../controller/action'
+import { doFilter, doSort } from '../controller/action'
 import { FilterDate } from './FilterDate'
 import { FilterSelect } from './FilterSelect'
 
@@ -92,6 +92,11 @@ export function renderTHCell({ col, initialValues }: Props): ReactNode {
 function FilterCell(props: ColumnOptions) {
     const [visible, setVisible] = useState(false)
 
+    const onFilterChange = useCallback((value: string) => {
+        setVisible(false)
+        doFilter(props.dataIndex, value)
+    }, [])
+
     return (
         <div className='th-filter'>
             <RcDropdown
@@ -101,7 +106,7 @@ function FilterCell(props: ColumnOptions) {
                 visible={visible}
                 overlay={
                     <div>
-                        <FilterByType {...props} />
+                        <FilterByType {...props} onChange={onFilterChange} />
                     </div>
                 }>
                 <button>
@@ -118,8 +123,8 @@ const FilterIcon = () => (
     </span>
 )
 
-const FilterByType = (props: ColumnOptions) => {
-    const { filterType: type, dataSource } = props
+const FilterByType = (props: ColumnOptions & { onChange?: (date: string) => void }) => {
+    const { filterType: type, dataSource, onChange } = props
     const [state, setState] = useState<{ key: string; value: string }[]>()
 
     useEffect(() => {
@@ -130,7 +135,7 @@ const FilterByType = (props: ColumnOptions) => {
 
     switch (type) {
         case 'date':
-            return <FilterDate />
+            return <FilterDate onChange={onChange} />
         case 'multi':
             return <FilterSelect dataSource={state} />
         default:

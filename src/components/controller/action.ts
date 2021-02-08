@@ -90,11 +90,7 @@ export function doPaging(page: number, size: number) {
 
 export function doFilter(key: string, value: string | number | boolean | undefined) {
     console.log('key', key, value)
-    // return new Promise((resolve) => {
-    //     setTimeout(async () => {
-    //         resolve(dispatch({ type: TABLE_INITIAL_DATA, payload: data }))
-    //     }, 1000) // indicating pending time for API requesting
-    // })
+    doRequest(buildQueryString({ [key]: value && decodeURIComponent(`${value}`) }))
 }
 
 export function doSearch(key: string, value: string) {
