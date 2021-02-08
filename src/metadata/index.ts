@@ -42,7 +42,7 @@ export function addMetadata(target: Object, key: string, value: object) {
     _metaColumns.set(metaKey, Object.assign(value, _metaColumns.get(metaKey)))
 }
 
-export function getMetadataColumns(key: string): BaseOptions[] {
+export function getMetadataColumns(key: string, initialValues: URLSearchParams): BaseOptions[] {
     const regex = new RegExp('\\b' + key + '\\b')
     const columns: object[] = []
     _metaColumns.forEach((value: ColumnOptions) => {
@@ -50,7 +50,7 @@ export function getMetadataColumns(key: string): BaseOptions[] {
             if (!value.render) {
                 Object.assign(value, { dataIndex: value['key'] })
             }
-            value.title = renderTHCell({ col: value })
+            value.title = renderTHCell({ col: value, initialValues })
             columns.push(value)
         }
     })

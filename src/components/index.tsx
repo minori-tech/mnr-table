@@ -29,7 +29,7 @@ export function Table<T extends object = any>(props: TableProps<T>) {
     }, [baseURL])
     const [state, dispatch] = useReducer(tableReducer, initialStore)
 
-    const columns = useMemo(() => getMetadataColumns(metadata.name), [baseURL])
+    const columns = useMemo(() => getMetadataColumns(metadata.name, new URLSearchParams(location.search)), [baseURL])
     const history = useHistory()
 
     useEffect(() => {

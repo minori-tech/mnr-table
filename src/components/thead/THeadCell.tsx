@@ -7,7 +7,7 @@ import { doSort } from '../controller/action'
 import { FilterDate } from './FilterDate'
 import { FilterSelect } from './FilterSelect'
 
-type Props = { col: ColumnOptions }
+type Props = { col: ColumnOptions; initialValues: URLSearchParams }
 
 enum SORT_CLASS {
     NONE = 'sorting-none',
@@ -15,13 +15,13 @@ enum SORT_CLASS {
     DESC = 'sorting-desc'
 }
 const SORT_TYPE = {
-    [SORT_CLASS.ASC]: 'ACS',
+    [SORT_CLASS.ASC]: 'ASC',
     [SORT_CLASS.DESC]: 'DESC'
 }
 const SORT_ATTRIBUTE = 'data-sort'
 
 function updateClass(currentTarget: HTMLSpanElement) {
-    const currentSort = currentTarget.getAttribute(SORT_ATTRIBUTE)
+    const currentSort = currentTarget.classList.item(currentTarget.classList.length - 1)
     switch (currentSort) {
         case SORT_CLASS.ASC:
             currentTarget.classList.remove(SORT_CLASS.ASC)
@@ -44,7 +44,16 @@ function updateClass(currentTarget: HTMLSpanElement) {
     }
 }
 
-export function renderTHCell({ col }: Props): ReactNode {
+export function renderTHCell({ col, initialValues }: Props): ReactNode {
+    let sortClass: string = SORT_CLASS.NONE
+    let sortAttribute: string
+
+    if (initialValues.get('sortKey') === col.key) {
+        const sortOrder = initialValues.get('sortOrder')
+        sortAttribute = sortOrder
+        sortClass = SORT_CLASS[sortOrder] || SORT_CLASS.NONE
+    }
+
     const onSortClick = ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
         const target = currentTarget.querySelector('.th-sort') as HTMLSpanElement
         if (target === null) return
@@ -60,13 +69,12 @@ export function renderTHCell({ col }: Props): ReactNode {
         })
         doSort(col.key, SORT_TYPE[target.getAttribute(SORT_ATTRIBUTE)])
     }
-
     return (
         <div>
             <div className='th-title' onClick={col.sort && onSortClick}>
                 <span>{typeof col.title === 'function' ? col.title(col.key) : col.title}</span>
                 {col.sort && (
-                    <span className='th-sort sorting-none' data-key={col.key}>
+                    <span className={`th-sort ${sortClass}`} data-key={col.key} data-sort={sortAttribute}>
                         <span>
                             <FontAwesomeIcon icon={faSortUp} />
                         </span>
