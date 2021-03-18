@@ -1,33 +1,33 @@
 import { AlignOptions, BaseOptions, ColumnOptions, FilterOptions, RenderOptions, ResponsiveOptions } from '../@types'
-import { renderTHCell } from '../components/thead'
+import { getColumnFilterProps, getColumnSearchProps } from '../components/thead'
 
 type ColumnDecorator = (object: any, propertyName: string) => void
 
-export function Column(options?: BaseOptions): ColumnDecorator {
+export function Column(options: BaseOptions = {}): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
     }
 }
 
-export function Render(options?: RenderOptions): ColumnDecorator {
+export function Render(options: RenderOptions = {}): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
     }
 }
 
-export function Responsive(options?: ResponsiveOptions): ColumnDecorator {
+export function Responsive(options: ResponsiveOptions = {}): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
     }
 }
 
-export function Align(options?: AlignOptions): ColumnDecorator {
+export function Align(options: AlignOptions = {}): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
     }
 }
 
-export function Filter(options?: FilterOptions): ColumnDecorator {
+export function Filter(options: FilterOptions = {}): ColumnDecorator {
     return function (object: any, propertyName: string) {
         addMetadata(object, propertyName, options)
     }
@@ -42,15 +42,37 @@ export function addMetadata(target: Object, key: string, value: object) {
     _metaColumns.set(metaKey, Object.assign(value, _metaColumns.get(metaKey)))
 }
 
-export function getMetadataColumns(key: string, initialValues: URLSearchParams): BaseOptions[] {
+export function getMetadataColumns(key: string, initialValues: URLSearchParams, clientPerform: boolean): BaseOptions[] {
     const regex = new RegExp('\\b' + key + '\\b')
     const columns: object[] = []
-    _metaColumns.forEach((value: ColumnOptions) => {
+    _metaColumns.forEach((col: unknown) => {
+        const value = col as ColumnOptions
+        const defaultValue = initialValues.get(value.key)!
         if (regex.test(key)) {
             if (!value.render) {
                 Object.assign(value, { dataIndex: value['key'] })
             }
-            value.title = renderTHCell({ col: value, initialValues })
+            switch (value.filterType) {
+                case 'date':
+                    break
+                case 'multi':
+                    Object.assign(
+                        value,
+                        getColumnFilterProps({
+                            dataIndex: value.key,
+                            defaultValue,
+                            clientPerform,
+                            multi: value.multi,
+                            dataSource: value.dataSource
+                        })
+                    )
+                    break
+                case 'search':
+                    Object.assign(value, getColumnSearchProps({ dataIndex: value.key, defaultValue, clientPerform }))
+                    break
+                default:
+                    break
+            }
             columns.push(value)
         }
     })

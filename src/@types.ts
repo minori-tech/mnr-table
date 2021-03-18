@@ -1,19 +1,19 @@
-export type FilterType = 'multi' | 'date' | undefined
+export type FilterType = 'multi' | 'date' | 'search' | undefined
 
 export type Lookup = Record<number | string, string>
 export type Translate = (key?: string) => string
 export declare type Breakpoint = 'mobile' | 'tablet' | 'desktop' | 'widescreen' | 'fullhd'
 
 export interface BaseOptions {
-    key: string
-    title: string | Translate
+    key?: string
+    title?: string | Translate
     className?: string
     width?: string | number
     sort?: boolean
 }
 
 export interface RenderOptions {
-    render?: (record: unknown, index?: number) => JSX.Element
+    render?: (record: any, index?: number) => JSX.Element
 }
 
 export interface ResponsiveOptions {
@@ -26,6 +26,8 @@ export interface AlignOptions {
 
 export interface FilterOptions {
     filterType?: FilterType
+    /** Multiple item can be selected */
+    multi?: boolean
     dataSource?: () => Promise<{ key: string; value: string }[]>
 }
 

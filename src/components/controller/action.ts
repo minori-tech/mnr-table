@@ -29,9 +29,16 @@ let _dispatch: React.Dispatch<TableAction>
 let _baseAPI: string
 let _bearerToken: string
 let _subscription: Subscription
+let _clientPerform: boolean
 
 type Search = Record<string, string | number | boolean | undefined>
-type ActionOptions = { baseAPI: string; bearerToken?: string; history: History; dispatch: React.Dispatch<TableAction> }
+type ActionOptions = {
+    baseAPI: string
+    bearerToken?: string
+    history: History
+    clientPerform: boolean
+    dispatch: React.Dispatch<TableAction>
+}
 
 function buildQueryString(search: Search): string {
     const searchParams = new URLSearchParams(location.search)
@@ -40,10 +47,12 @@ function buildQueryString(search: Search): string {
         if (!search[key] || (Array.isArray(value) && !value.length)) {
             searchParams.delete(key)
         } else {
-            searchParams.set(key, `${search[key]}`)
+            searchParams.set(key, decodeURIComponent(`${search[key]}`))
         }
     })
-    return searchParams.toString()
+    const queryString = searchParams.toString()
+    _history.replace({ pathname: location.pathname, search: queryString })
+    return queryString
 }
 
 function doRequest(search: string) {
@@ -59,12 +68,13 @@ function doRequest(search: string) {
     )
 }
 
-export function doFetchData({ baseAPI, bearerToken, history, dispatch }: ActionOptions) {
+export function doFetchData({ baseAPI, bearerToken = '', history, clientPerform, dispatch }: ActionOptions) {
     doCancelRequest()
 
     _baseAPI = baseAPI
     _bearerToken = bearerToken
     _history = history
+    _clientPerform = clientPerform
     _dispatch = dispatch
     _subscription = createRequest({ url: baseAPI, bearerToken, params: buildQueryString({}) }).subscribe(
         (response: AjaxResponse) => {
@@ -80,26 +90,22 @@ export function doFetchData({ baseAPI, bearerToken, history, dispatch }: ActionO
     )
 }
 
-export function doSort(key: string, sort: 'ASC' | 'DESC' | null) {
+export function doSort(key: string, sort?: string) {
     doRequest(buildQueryString({ sortKey: sort && key, sortOrder: sort }))
 }
 
-export function doPaging(page: number, size: number) {
-    doRequest(buildQueryString({ page }))
+export function doPaging(page: number, size?: number) {
+    doRequest(buildQueryString({ page, size }))
 }
 
 export function doFilter(key: string, value: string | number | boolean | undefined) {
     console.log('key', key, value)
-    doRequest(buildQueryString({ [key]: value && decodeURIComponent(`${value}`) }))
+    doRequest(buildQueryString({ [key]: value }))
 }
 
 export function doSearch(key: string, value: string) {
-    console.log('key', key, value)
-    // return new Promise((resolve) => {
-    //     setTimeout(async () => {
-    //         resolve(dispatch({ type: TABLE_INITIAL_DATA, payload: data }))
-    //     }, 1000) // indicating pending time for API requesting
-    // })
+    const queryString = buildQueryString({ [key]: value })
+    if (!_clientPerform) doRequest(queryString)
 }
 
 export function doCancelRequest() {

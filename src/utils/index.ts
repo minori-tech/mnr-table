@@ -14,8 +14,8 @@ const ALIGN_CLASS = {
 
 export const getClasses = (options: ColumnOptions) => {
     const { align, className, responsive } = options
-    const classes = []
-    classes.push(...responsive?.map((r) => HIDDEN_CLASS[r]))
+    const classes: string[] = []
+    if (responsive) classes.push(...responsive.map((r) => HIDDEN_CLASS[r]))
     if (className) classes.push(className)
     if (align) classes.push(ALIGN_CLASS[align])
     return classes.join(' ')

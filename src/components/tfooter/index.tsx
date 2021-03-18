@@ -1,6 +1,5 @@
-import Pagination, { PaginationProps } from 'rc-pagination'
+import { Pagination, PaginationProps } from 'antd'
 import React from 'react'
-import '../../styles/tfooter.less'
 
 interface TFooterProps extends PaginationProps {
     disabled?: boolean

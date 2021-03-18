@@ -1,8 +1,9 @@
+import 'antd/dist/antd.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { Table } from '../src'
-import { Column, Filter, Render, Responsive, TableProps } from '../src/index'
+import { TableView } from '../src'
+import { Column, Filter, Render, TableProps } from '../src/index'
 
 function renderId(record: Sample): JSX.Element {
     return <>{record.id}</>
@@ -15,18 +16,20 @@ class Sample {
     id?: string
 
     @Column({ key: 'title', title: 'Title', sort: true })
-    @Filter({ filterType: 'date' })
+    @Filter({ filterType: 'search' })
     // @Align({ align: 'right' })
-    title?: number
+    title?: string
 
     @Column({ key: 'body', title: 'Body', className: 'xxx' })
-    @Responsive({ responsive: ['mobile', 'tablet'] })
+    // @Responsive({ responsive: ['mobile', 'tablet'] })
     // @Align({ align: 'right' })
-    body?: number
+    @Filter({ filterType: 'search' })
+    body?: string
 
     @Column({ key: 'tracker', title: 'Tracker', className: 'xxx' })
     @Filter({
         filterType: 'multi',
+        multi: false,
         dataSource: () =>
             Promise.resolve([
                 { key: '1', value: 'Value 1' },
@@ -47,7 +50,7 @@ function Demo() {
     const props = new TableProps(Sample, 'https://jsonplaceholder.typicode.com/posts')
     return (
         <BrowserRouter>
-            <Table {...props} />
+            <TableView {...props} clientPerform />
         </BrowserRouter>
     )
 }
